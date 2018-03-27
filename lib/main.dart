@@ -1,5 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:english_words/english_words.dart';
+
+final ThemeData kIOSTheme = new ThemeData(
+  primarySwatch: Colors.orange,
+  primaryColor: Colors.grey[100],
+  primaryColorBrightness: Brightness.light
+);
+
+final ThemeData kAndroidTheme = new ThemeData(
+  primarySwatch: Colors.purple,
+  accentColor: Colors.orangeAccent[400]
+);
 
 void main() => runApp(new MyApp());
 
@@ -8,9 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Startup Name Suggestions',
-      theme: new ThemeData(
-        primaryColor: Colors.white
-      ),
+      theme: defaultTargetPlatform == TargetPlatform.iOS ? kIOSTheme : kAndroidTheme,
       home: new RandomWords(),
     );
   }
@@ -31,6 +42,7 @@ class RandomWordsState extends State<RandomWords> {
     return new Scaffold (
       appBar: new AppBar(
         title: new Text('Startup Name Suggestions'),
+        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved)
         ],
@@ -89,17 +101,12 @@ class RandomWordsState extends State<RandomWords> {
 
   Widget _buildSuggestions() {
     return new ListView.builder(
-      padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
-        final index = i ~/ 2;
-        
-        if (i.isOdd) return new Divider();
-        
-        if (index >= _suggestions.length) {
+        if (i >= _suggestions.length) {
           _suggestions.addAll(generateWordPairs().take(10));
         }
         
-        return _buildRow(_suggestions[index]);
+        return _buildRow(_suggestions[i]);
       }
     );
   }
