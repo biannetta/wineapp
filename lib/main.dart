@@ -11,7 +11,7 @@ final ThemeData kIOSTheme = new ThemeData(
 
 final ThemeData kAndroidTheme = new ThemeData(
   primarySwatch: Colors.purple,
-  accentColor: Colors.orangeAccent[400]
+  accentColor: Colors.purpleAccent[400]
 );
 
 void main() => runApp(new MyApp());
@@ -80,21 +80,34 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
-    final alreadySaved = _saved.contains(pair);
-    return new ListTile(
-      title: new Text(pair.asPascalCase, style: _biggerFont),
-      trailing: new Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
+    return new Dismissible(
+      key: new Key(pair.asCamelCase),
+      background: new Container(
+        alignment: AlignmentDirectional.centerStart,
+        child: new Icon(Icons.star_border),
+        color: Colors.green[200],
+        padding: const EdgeInsets.all(8.0),
       ),
-      onTap: () {
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
+      secondaryBackground: new Container(
+        alignment: AlignmentDirectional.centerEnd,
+        child: new Icon(Icons.delete_forever),
+        color: Colors.red[200],
+        padding: const EdgeInsets.all(8.0),
+      ),
+      child: new ListTile(
+        title: new Text(pair.asPascalCase, style: _biggerFont),
+      ),
+      onDismissed: (direction) {
+        if (direction == DismissDirection.startToEnd) {
+          setState((){
             _saved.add(pair);
-          }
-        });
+            _suggestions.remove(pair);
+          });
+        } else {
+          setState((){
+            _suggestions.remove(pair);
+          });
+        }
       },
     );
   }
