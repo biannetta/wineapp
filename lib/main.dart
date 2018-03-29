@@ -11,7 +11,7 @@ final ThemeData kIOSTheme = new ThemeData(
 
 final ThemeData kAndroidTheme = new ThemeData(
   primarySwatch: Colors.purple,
-  accentColor: Colors.purpleAccent[400]
+  accentColor: Colors.orangeAccent[400]
 );
 
 void main() => runApp(new MyApp());
@@ -57,8 +57,31 @@ class RandomWordsState extends State<RandomWords> {
         builder: (context) {
           final tiles = _saved.map(
             (pair) {
-              return new ListTile(
-                title: new Text(pair.asPascalCase, style: _biggerFont),
+              return new Dismissible(
+                key: new Key(pair.asCamelCase),
+                background: new Container(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: new Icon(Icons.star_border, color: Colors.greenAccent[400]),
+                  color: Colors.green[200],
+                  padding: const EdgeInsets.all(8.0),
+                ),
+                secondaryBackground: new Container(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: new Icon(Icons.delete_forever, color: Colors.redAccent[700]),
+                  color: Colors.red[200],
+                  padding: const EdgeInsets.all(8.0),
+                ),
+                child: new ListTile(
+                  title: new Text(pair.asPascalCase, style: _biggerFont),
+                ),
+                direction: DismissDirection.endToStart,
+                onDismissed: (direction) {
+                  setState((){
+                    if (direction == DismissDirection.endToStart) {
+                      _saved.remove(pair);
+                    }
+                  });
+                },
               );
             }
           );
@@ -71,6 +94,7 @@ class RandomWordsState extends State<RandomWords> {
           return new Scaffold(
             appBar: new AppBar(
               title: new Text('Saved Suggestions'),
+              elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
             ),
             body: new ListView(children: divided),
           );
@@ -84,13 +108,13 @@ class RandomWordsState extends State<RandomWords> {
       key: new Key(pair.asCamelCase),
       background: new Container(
         alignment: AlignmentDirectional.centerStart,
-        child: new Icon(Icons.star_border),
+        child: new Icon(Icons.star_border, color: Colors.greenAccent[700]),
         color: Colors.green[200],
         padding: const EdgeInsets.all(8.0),
       ),
       secondaryBackground: new Container(
         alignment: AlignmentDirectional.centerEnd,
-        child: new Icon(Icons.delete_forever),
+        child: new Icon(Icons.delete_forever, color: Colors.redAccent[700]),
         color: Colors.red[200],
         padding: const EdgeInsets.all(8.0),
       ),
@@ -98,16 +122,7 @@ class RandomWordsState extends State<RandomWords> {
         title: new Text(pair.asPascalCase, style: _biggerFont),
       ),
       onDismissed: (direction) {
-        if (direction == DismissDirection.startToEnd) {
-          setState((){
-            _saved.add(pair);
-            _suggestions.remove(pair);
-          });
-        } else {
-          setState((){
-            _suggestions.remove(pair);
-          });
-        }
+        _swipeTile(direction, pair);
       },
     );
   }
@@ -122,5 +137,16 @@ class RandomWordsState extends State<RandomWords> {
         return _buildRow(_suggestions[i]);
       }
     );
+  }
+
+  void _swipeTile(DismissDirection direction, WordPair pair) {
+    setState((){
+      if (direction == DismissDirection.startToEnd) {
+        _saved.add(pair);
+        _suggestions.remove(pair);
+      } else {
+        _suggestions.remove(pair);
+      }
+    });
   }
 }
