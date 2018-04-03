@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:english_words/english_words.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 final ThemeData kIOSTheme = new ThemeData(
   primarySwatch: Colors.orange,
@@ -36,6 +37,18 @@ class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _saved = new Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  
+  DatabaseReference _wineRef;
+
+  @override
+  void initState() {
+    super.initState();
+    _wineRef = FirebaseDatabase.instance.reference().child('wines');
+
+    _wineRef.once().then((DataSnapshot snap) {
+      print('${snap.value}');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
