@@ -38,16 +38,14 @@ class RandomWordsState extends State<RandomWords> {
   final _saved = new Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
   
-  DatabaseReference _wineRef;
+  DatabaseReference _wines;
+  DatabaseReference _events;
 
   @override
   void initState() {
     super.initState();
-    _wineRef = FirebaseDatabase.instance.reference().child('wines');
-
-    _wineRef.once().then((DataSnapshot snap) {
-      print('${snap.value}');
-    });
+    _wines = FirebaseDatabase.instance.reference().child('wines');
+    _events = FirebaseDatabase.instance.reference().child('events');
   }
 
   @override
@@ -60,7 +58,7 @@ class RandomWordsState extends State<RandomWords> {
           new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved)
         ],
       ),
-      body: _buildSuggestions(),
+      body: displayWines(),
     );
   }
 
@@ -137,6 +135,29 @@ class RandomWordsState extends State<RandomWords> {
       onDismissed: (direction) {
         _swipeTile(direction, pair);
       },
+    );
+  }
+
+  Widget displayWines() {
+    _wines.once().then((snap) {
+      for (var wine in snap.value) {
+        _buildCard(wine['name'], wine['type'], wine['rating'].toString());
+      }
+    });
+  }
+
+  Widget _buildCard(String title, String subtitle, String rating) {
+    return new Card(
+      child: new Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const ListTile(
+            leading: const CircleAvatar(backgroundColor: Colors.green, child: const Text('{rating}')),
+            title: const Text('{title}'),
+            subtitle: const Text('{subtitle}'),
+          )
+        ],
+      ),
     );
   }
 
