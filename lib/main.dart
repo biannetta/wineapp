@@ -39,13 +39,19 @@ class RandomWordsState extends State<RandomWords> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   
   DatabaseReference _wines;
-  DatabaseReference _events;
+  List wines = [];
 
   @override
   void initState() {
     super.initState();
     _wines = FirebaseDatabase.instance.reference().child('wines');
-    _events = FirebaseDatabase.instance.reference().child('events');
+    _wines.once().then((snap) {
+      setState(() {
+        for (var item in snap.value) {
+          wines.add(item);
+        }
+      });
+    });
   }
 
   @override
@@ -139,25 +145,18 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget displayWines() {
-    _wines.once().then((snap) {
-      for (var wine in snap.value) {
-        _buildCard(wine['name'], wine['type'], wine['rating'].toString());
-      }
-    });
+    return new ListView.builder(
+      itemBuilder: (context, i) => _buildCard(wines[i]['name'], wines[i]['type'], wines[i]['rating'].toString()),
+      itemCount: wines.length,
+      itemExtent: 42.0,
+    );
   }
 
   Widget _buildCard(String title, String subtitle, String rating) {
-    return new Card(
-      child: new Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const ListTile(
-            leading: const CircleAvatar(backgroundColor: Colors.green, child: const Text('{rating}')),
-            title: const Text('{title}'),
-            subtitle: const Text('{subtitle}'),
-          )
-        ],
-      ),
+    return new ListTile(
+      leading: new CircleAvatar(backgroundColor: Colors.green, child: new Text(rating)),
+      title: new Text(title),
+      subtitle: new Text(subtitle),
     );
   }
 
