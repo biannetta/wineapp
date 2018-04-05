@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:english_words/english_words.dart';
-import 'package:firebase_database/firebase_database.dart';
+
+import 'winecard.dart';
+import 'wine.dart';
 
 final ThemeData kIOSTheme = new ThemeData(
   primarySwatch: Colors.orange,
@@ -21,165 +22,53 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Startup Name Suggestions',
+      title: 'Wines',
       theme: defaultTargetPlatform == TargetPlatform.iOS ? kIOSTheme : kAndroidTheme,
-      home: new RandomWords(),
+      home: new WineApp(),
     );
   }
 }
 
-class RandomWords extends StatefulWidget {
+class WineApp extends StatefulWidget {
   @override
-  createState() => new RandomWordsState();
+  createState() => new WineAppState();
 }
 
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _saved = new Set<WordPair>();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-  
-  DatabaseReference _wines;
-  List wines = [];
+class WineAppState extends State<WineApp> {
+  List<Wine> _wines = [];
 
   @override
   void initState() {
     super.initState();
-    _wines = FirebaseDatabase.instance.reference().child('wines');
-    _wines.once().then((snap) {
-      setState(() {
-        for (var item in snap.value) {
-          wines.add(item);
-        }
-      });
-    });
+    
+    getData().then((onValue) => onValue.forEach((item) {
+      Wine wine = new Wine(item['name'], item['notes'], item['rating'], item['region'], item['type']);
+      _wines.add(wine);
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold (
       appBar: new AppBar(
-        title: new Text('Startup Name Suggestions'),
+        title: new Text('Wine Club'),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
-        actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved)
-        ],
       ),
-      body: displayWines(),
-    );
-  }
-
-  void _pushSaved() {
-    Navigator.of(context).push(
-      new MaterialPageRoute(
-        builder: (context) {
-          final tiles = _saved.map(
-            (pair) {
-              return new Dismissible(
-                key: new Key(pair.asCamelCase),
-                background: new Container(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: new Icon(Icons.star_border, color: Colors.greenAccent[400]),
-                  color: Colors.green[200],
-                  padding: const EdgeInsets.all(8.0),
+      body: new Container(
+        child: new CustomScrollView(
+          slivers: <Widget>[
+            new SliverPadding(
+              padding: const EdgeInsets.symmetric(vertical: 18.0),
+              sliver: new SliverList(
+                delegate: new SliverChildBuilderDelegate(
+                  (context, index) => new WineCard(_wines[index]),
+                  childCount: _wines.length
                 ),
-                secondaryBackground: new Container(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: new Icon(Icons.delete_forever, color: Colors.redAccent[700]),
-                  color: Colors.red[200],
-                  padding: const EdgeInsets.all(8.0),
-                ),
-                child: new ListTile(
-                  title: new Text(pair.asPascalCase, style: _biggerFont),
-                ),
-                direction: DismissDirection.endToStart,
-                onDismissed: (direction) {
-                  setState((){
-                    if (direction == DismissDirection.endToStart) {
-                      _saved.remove(pair);
-                    }
-                  });
-                },
-              );
-            }
-          );
-
-          final divided = ListTile.divideTiles(
-            context: context,
-            tiles: tiles
-          ).toList();
-
-          return new Scaffold(
-            appBar: new AppBar(
-              title: new Text('Saved Suggestions'),
-              elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
-            ),
-            body: new ListView(children: divided),
-          );
-        }
-      )
-    );
-  }
-
-  Widget _buildRow(WordPair pair) {
-    return new Dismissible(
-      key: new Key(pair.asCamelCase),
-      background: new Container(
-        alignment: AlignmentDirectional.centerStart,
-        child: new Icon(Icons.star_border, color: Colors.greenAccent[700]),
-        color: Colors.green[200],
-        padding: const EdgeInsets.all(8.0),
+              ),
+            )
+          ],
+        ),
       ),
-      secondaryBackground: new Container(
-        alignment: AlignmentDirectional.centerEnd,
-        child: new Icon(Icons.delete_forever, color: Colors.redAccent[700]),
-        color: Colors.red[200],
-        padding: const EdgeInsets.all(8.0),
-      ),
-      child: new ListTile(
-        title: new Text(pair.asPascalCase, style: _biggerFont),
-      ),
-      onDismissed: (direction) {
-        _swipeTile(direction, pair);
-      },
     );
-  }
-
-  Widget displayWines() {
-    return new ListView.builder(
-      itemBuilder: (context, i) => _buildCard(wines[i]['name'], wines[i]['type'], wines[i]['rating'].toString()),
-      itemCount: wines.length,
-      itemExtent: 42.0,
-    );
-  }
-
-  Widget _buildCard(String title, String subtitle, String rating) {
-    return new ListTile(
-      leading: new CircleAvatar(backgroundColor: Colors.green, child: new Text(rating)),
-      title: new Text(title),
-      subtitle: new Text(subtitle),
-    );
-  }
-
-  Widget _buildSuggestions() {
-    return new ListView.builder(
-      itemBuilder: (context, i) {
-        if (i >= _suggestions.length) {
-          _suggestions.addAll(generateWordPairs().take(10));
-        }
-        
-        return _buildRow(_suggestions[i]);
-      }
-    );
-  }
-
-  void _swipeTile(DismissDirection direction, WordPair pair) {
-    setState((){
-      if (direction == DismissDirection.startToEnd) {
-        _saved.add(pair);
-        _suggestions.remove(pair);
-      } else {
-        _suggestions.remove(pair);
-      }
-    });
   }
 }
