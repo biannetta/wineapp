@@ -43,7 +43,9 @@ class WineAppState extends State<WineApp> {
     
     getData().then((onValue) => onValue.forEach((item) {
       Wine wine = new Wine(item['name'], item['notes'], item['rating'], item['region'], item['type']);
+      setState((){
       _wines.add(wine);
+      });
     }));
   }
 
@@ -51,7 +53,12 @@ class WineAppState extends State<WineApp> {
   Widget build(BuildContext context) {
     return new Scaffold (
       appBar: new AppBar(
-        title: new Text('Wine Club'),
+        title: new Center(
+          child: new Text(
+            'Wineclub',
+            style: new TextStyle(fontSize: 25.0, fontFamily: "Lobster"),
+            )
+          ),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
       ),
       body: new Container(
