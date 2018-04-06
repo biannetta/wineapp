@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
-import 'winecard.dart';
+import 'winelist.dart';
 import 'wine.dart';
 
 final ThemeData kIOSTheme = new ThemeData(
@@ -44,7 +44,7 @@ class WineAppState extends State<WineApp> {
     getData().then((onValue) => onValue.forEach((item) {
       Wine wine = new Wine(item['name'], item['notes'], item['rating'], item['region'], item['type']);
       setState((){
-      _wines.add(wine);
+        _wines.add(wine);
       });
     }));
   }
@@ -61,21 +61,7 @@ class WineAppState extends State<WineApp> {
           ),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
       ),
-      body: new Container(
-        child: new CustomScrollView(
-          slivers: <Widget>[
-            new SliverPadding(
-              padding: const EdgeInsets.symmetric(vertical: 18.0),
-              sliver: new SliverList(
-                delegate: new SliverChildBuilderDelegate(
-                  (context, index) => new WineCard(_wines[index]),
-                  childCount: _wines.length
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+      body: new WineList(_wines),
     );
   }
 }

@@ -12,6 +12,6 @@ class Wine {
 }
 
 Future <List> getData () async {
-  var snap =await FirebaseDatabase.instance.reference().child('wines').once();
+  var snap = await FirebaseDatabase.instance.reference().child('wines').once();
   return snap.value;
 }
