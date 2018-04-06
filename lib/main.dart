@@ -2,19 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
-import 'winelist.dart';
-import 'wine.dart';
-
-final ThemeData kIOSTheme = new ThemeData(
-  primarySwatch: Colors.orange,
-  primaryColor: Colors.grey[100],
-  primaryColorBrightness: Brightness.light
-);
-
-final ThemeData kAndroidTheme = new ThemeData(
-  primarySwatch: Colors.purple,
-  accentColor: Colors.orangeAccent[400]
-);
+import 'ui/theming.dart';
+import 'ui/winelist.dart';
+import 'models/wine.dart';
 
 void main() => runApp(new MyApp());
 
@@ -53,6 +43,7 @@ class WineAppState extends State<WineApp> {
   Widget build(BuildContext context) {
     return new Scaffold (
       appBar: new AppBar(
+        backgroundColor: primaryColour,
         title: new Center(
           child: new Text(
             'Wineclub',

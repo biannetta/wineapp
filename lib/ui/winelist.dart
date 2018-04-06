@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'wine.dart';
+import 'theming.dart';
 import 'winecard.dart';
+import '../models/wine.dart';
 
 class WineList extends StatelessWidget {
   final List<Wine> _wines;
@@ -11,6 +12,10 @@ class WineList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
+      decoration: new BoxDecoration(
+        color: secondaryColour,
+        shape: BoxShape.rectangle
+      ),
       child: new CustomScrollView(
         slivers: <Widget>[
           new SliverPadding(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'wine.dart';
+
+import 'theming.dart';
+import '../models/wine.dart';
 
 class WineCard extends StatelessWidget {
   
@@ -21,7 +23,7 @@ class WineCard extends StatelessWidget {
             height: 100.0,
             padding: new EdgeInsets.symmetric(horizontal: 15.0),
             decoration: new BoxDecoration(
-              color: Colors.purple[100],
+              color: secondaryColour,
               shape: BoxShape.rectangle,
             ),
             child: _getWineCardTop()
@@ -30,7 +32,7 @@ class WineCard extends StatelessWidget {
             height: 50.0,
             padding: new EdgeInsets.symmetric(horizontal: 15.0),
             decoration: new BoxDecoration(
-              color: Colors.purple[500],
+              color: primaryColour,
               shape: BoxShape.rectangle
             ),
             child: _getWineCardBottom()
@@ -41,7 +43,7 @@ class WineCard extends StatelessWidget {
   }
 
   Widget _getWineCardTop() {
-    var ratingColor = Color.lerp(Colors.greenAccent, Colors.green[900], wine.rating/5);
+    var ratingColor = Color.lerp(Colors.red[600], Colors.green[600], wine.rating/5);
 
     return new Row(
       mainAxisSize: MainAxisSize.max,
@@ -56,8 +58,12 @@ class WineCard extends StatelessWidget {
   Widget _getWineCardBottom() {
     return new Row(
       mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
+        new Icon(Icons.local_drink, color: Colors.purple[50]),
         new Text('${wine.type}', style: footerText),
+        new Icon(Icons.pin_drop, color: Colors.purple[50]),
+        new Text ('${wine.region}', style: footerText)
       ],
     );
   }
