@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'package:firebase_database/firebase_database.dart';
-
 class Wine {
   String name;
   String notes;
@@ -9,9 +6,14 @@ class Wine {
   String type;
 
   Wine(this.name, this.notes, this.rating, this.region, this.type);
-}
 
-Future <List> getData () async {
-  var snap = await FirebaseDatabase.instance.reference().child('wines').once();
-  return snap.value;
+  Wine.fromJSON(Map jsonMap) {
+    this.name = jsonMap['name'];
+    this.notes = jsonMap['notes'];
+    this.rating = jsonMap['rating'];
+    this.region = jsonMap['region'];
+    this.type = jsonMap['type'];
+  }
+
+  toString() => this.name;
 }
