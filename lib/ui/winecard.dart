@@ -5,9 +5,9 @@ import '../models/wine.dart';
 
 class WineCard extends StatelessWidget {
   
-  final ratingText = new TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold);
-  final headerText = new TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white);
-  final footerText = new TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white);
+  final ratingText = new TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold);
+  final headerText = new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white);
+  final footerText = new TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white);
   final Wine wine;
   
   WineCard(this.wine);
@@ -17,13 +17,22 @@ class WineCard extends StatelessWidget {
     return new Container(
       height: 150.0,
       margin: new EdgeInsets.all(10.0),
+      decoration: new BoxDecoration(
+        boxShadow: <BoxShadow>[
+          new BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10.0,
+            offset: new Offset(0.0, 10.0),
+          ),
+        ],
+      ),
       child: new Column(
         children: <Widget>[
           new Container(
             height: 100.0,
             padding: new EdgeInsets.symmetric(horizontal: 15.0),
             decoration: new BoxDecoration(
-              color: secondaryColour,
+              color: primaryLightColour,
               shape: BoxShape.rectangle,
             ),
             child: _getWineCardTop()
@@ -32,7 +41,7 @@ class WineCard extends StatelessWidget {
             height: 50.0,
             padding: new EdgeInsets.symmetric(horizontal: 15.0),
             decoration: new BoxDecoration(
-              color: primaryColour,
+              color: primaryLightColour,
               shape: BoxShape.rectangle
             ),
             child: _getWineCardBottom()

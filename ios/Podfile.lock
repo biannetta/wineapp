@@ -36,22 +36,22 @@ PODS:
   - nanopb/encode (0.3.8)
 
 DEPENDENCIES:
-  - firebase_core (from `Pods/.symlinks/plugins/firebase_core-0.0.7/ios`)
-  - firebase_database (from `Pods/.symlinks/plugins/firebase_database-0.4.1/ios`)
+  - firebase_core (from `Pods/.symlinks/plugins/firebase_core-0.2.2/ios`)
+  - firebase_database (from `Pods/.symlinks/plugins/firebase_database-0.4.4/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
 
 EXTERNAL SOURCES:
   firebase_core:
-    :path: Pods/.symlinks/plugins/firebase_core-0.0.7/ios
+    :path: Pods/.symlinks/plugins/firebase_core-0.2.2/ios
   firebase_database:
-    :path: Pods/.symlinks/plugins/firebase_database-0.4.1/ios
+    :path: Pods/.symlinks/plugins/firebase_database-0.4.4/ios
   Flutter:
     :path: Pods/.symlinks/flutter/ios
 
 SPEC CHECKSUMS:
   Firebase: cc13dfab1038c8b45d7903e01fc690451d6d0b24
-  firebase_core: eb181e4f329c1806efdf2aed9e59ea98fe924ef5
-  firebase_database: bc8d2848137c7f4b4322fbe3e39fdc68d2518a37
+  firebase_core: c96aa8b2fcf7f5167d32f22034f502f9304952b8
+  firebase_database: dd62ab9f71967c9011ce2fd03a89e762dcc364df
   FirebaseAnalytics: 3dfae28d4a5e06f86c4fae830efc2ad3fadb19bc
   FirebaseCore: b981f47e5254cbcfdeb483355300d743f6fcab2c
   FirebaseDatabase: 5f0bc6134c5c237cf55f9e1249d406770a75eafd

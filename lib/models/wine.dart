@@ -10,7 +10,7 @@ class Wine {
   Wine.fromJSON(Map jsonMap) {
     this.name = jsonMap['name'];
     this.notes = jsonMap['notes'];
-    this.rating = jsonMap['rating'];
+    this.rating = double.parse(jsonMap['rating']);
     this.region = jsonMap['region'];
     this.type = jsonMap['type'];
   }

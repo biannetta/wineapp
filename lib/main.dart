@@ -11,6 +11,7 @@ import 'models/wine.dart';
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -28,7 +29,7 @@ class WineApp extends StatefulWidget {
 
 class WineAppState extends State<WineApp> {
 
-  var _wines = [];
+  List<Wine> _wines = [];
 
   @override
   void initState() {
@@ -39,25 +40,27 @@ class WineAppState extends State<WineApp> {
   Widget build(BuildContext context) {
     return new Scaffold (
       appBar: new AppBar(
-        backgroundColor: primaryColour,
+        backgroundColor: primaryDarkColour,
         title: new Center(
           child: new Text(
             'Wineclub',
-            style: new TextStyle(fontSize: 25.0, fontFamily: "Lobster"),
+            style: new TextStyle(fontSize: 30.0, fontFamily: "Lobster", color: Colors.white),
             )
           ),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
       ),
-      body: new StreamBuilder(
+      body: new StreamBuilder (
         stream: FirebaseDatabase.instance.reference().child('wines').onValue,
         builder: (BuildContext context, AsyncSnapshot<Event> event) {
           if (event.hasError)
             return new Text("Oppsie Poopsie");
           switch (event.connectionState) {
+            case ConnectionState.none: return new Text("No Connection");
+            case ConnectionState.waiting: return new Text("Loading . . . ");
             case ConnectionState.active: {
-              Map<String, Map> wines = event.data.snapshot.value;
+              Map<dynamic, dynamic> wines = event.data.snapshot.value;
+              _wines = [];
               wines.forEach((key,value) {
-                print(value);
                 _wines.add(new Wine.fromJSON(value));
               });
               return new WineList(_wines);

@@ -14,7 +14,7 @@ class WineList extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       decoration: new BoxDecoration(
-        color: secondaryColour,
+        color: primaryDarkColour,
         shape: BoxShape.rectangle
       ),
       child: new CustomScrollView(
