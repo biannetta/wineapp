@@ -58,8 +58,14 @@ class WineCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        new CircleAvatar(backgroundColor: ratingColor, child: new Text('${wine.rating}',style: ratingText,), radius: 40.0),
-        new Text('${wine.name}', style: headerText),
+        new Expanded(
+          child: new Row(
+            children: <Widget>[
+              new CircleAvatar(backgroundColor: ratingColor, child: new Text('${wine.rating}',style: ratingText,), radius: 40.0),
+              new Text('${wine.name}', style: headerText, overflow: TextOverflow.ellipsis,),
+            ],
+          ),
+        )
       ],
     );
   }
@@ -69,10 +75,22 @@ class WineCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        new Icon(Icons.local_drink, color: Colors.purple[50]),
-        new Text('${wine.type}', style: footerText),
-        new Icon(Icons.pin_drop, color: Colors.purple[50]),
-        new Text ('${wine.region}', style: footerText)
+        new Expanded(
+          child: new Row(
+            children: <Widget>[
+              new Icon(Icons.local_drink, color: Colors.purple[50]),
+              new Text('${wine.type}', style: footerText),
+            ],
+          ),
+        ),
+        new Expanded(
+          child: new Row(
+            children: <Widget>[
+              new Icon(Icons.pin_drop, color: Colors.purple[50]),
+              new Text ('${wine.region}', style: footerText)
+            ],
+          ),
+        )
       ],
     );
   }
