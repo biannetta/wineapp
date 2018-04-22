@@ -20,7 +20,7 @@ class WineList extends StatelessWidget {
       child: new CustomScrollView(
         slivers: <Widget>[
           new SliverPadding(
-            padding: const EdgeInsets.symmetric(vertical: 18.0),
+            padding: const EdgeInsets.symmetric(vertical: 0.0),
             sliver: new SliverList(
               delegate: new SliverChildBuilderDelegate(
                 (context, index) => new WineCard(_wines[index]),

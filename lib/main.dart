@@ -45,8 +45,8 @@ class WineAppState extends State<WineApp> {
           child: new Text(
             'Wineclub',
             style: new TextStyle(fontSize: 30.0, fontFamily: "Lobster", color: Colors.white),
-            )
-          ),
+          )
+        ),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
       ),
       body: new StreamBuilder (

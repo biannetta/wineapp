@@ -15,9 +15,11 @@ class WineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      height: 150.0,
+      height: 120.0,
       margin: new EdgeInsets.all(10.0),
       decoration: new BoxDecoration(
+        color: primaryLightColour,
+        shape: BoxShape.rectangle,
         boxShadow: <BoxShadow>[
           new BoxShadow(
             color: Colors.black12,
@@ -29,21 +31,13 @@ class WineCard extends StatelessWidget {
       child: new Column(
         children: <Widget>[
           new Container(
-            height: 100.0,
+            height: 80.0,
             padding: new EdgeInsets.symmetric(horizontal: 15.0),
-            decoration: new BoxDecoration(
-              color: primaryLightColour,
-              shape: BoxShape.rectangle,
-            ),
             child: _getWineCardTop()
           ),
           new Container(
-            height: 50.0,
+            height: 40.0,
             padding: new EdgeInsets.symmetric(horizontal: 15.0),
-            decoration: new BoxDecoration(
-              color: primaryLightColour,
-              shape: BoxShape.rectangle
-            ),
             child: _getWineCardBottom()
           )
         ]
@@ -52,21 +46,23 @@ class WineCard extends StatelessWidget {
   }
 
   Widget _getWineCardTop() {
-    var ratingColor = Color.lerp(Colors.red[600], Colors.green[600], wine.rating/5);
-
     return new Row(
       mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         new Expanded(
-          child: new Row(
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new CircleAvatar(backgroundColor: ratingColor, child: new Text('${wine.rating}',style: ratingText,), radius: 40.0),
               new Text('${wine.name}', style: headerText, overflow: TextOverflow.ellipsis,),
+              new Text('${wine.type}', style: footerText, overflow: TextOverflow.ellipsis,),
             ],
           ),
-        )
-      ],
+        ),
+        new Icon(Icons.star, color: Colors.amberAccent,),
+        new Text('${wine.rating}', style: headerText,)
+      ]
     );
   }
 
@@ -75,15 +71,7 @@ class WineCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        new Expanded(
-          child: new Row(
-            children: <Widget>[
-              new Icon(Icons.local_drink, color: Colors.purple[50]),
-              new Text('${wine.type}', style: footerText),
-            ],
-          ),
-        ),
-        new Expanded(
+       new Expanded(
           child: new Row(
             children: <Widget>[
               new Icon(Icons.pin_drop, color: Colors.purple[50]),
