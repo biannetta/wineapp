@@ -47,18 +47,18 @@ class WineAppState extends State<WineApp> {
             style: new TextStyle(fontSize: 30.0, fontFamily: "Lobster", color: Colors.white),
           )
         ),
-        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
+        elevation: 0.0,
       ),
       body: new StreamBuilder (
         stream: FirebaseDatabase.instance.reference().child('wines').onValue,
-        builder: (BuildContext context, AsyncSnapshot<Event> event) {
-          if (event.hasError)
+        builder: (BuildContext context, AsyncSnapshot<Event> snap) {
+          if (snap.hasError)
             return new Text("Oppsie Poopsie");
-          switch (event.connectionState) {
+          switch (snap.connectionState) {
             case ConnectionState.none: return new Text("No Connection");
             case ConnectionState.waiting: return new Text("Loading . . . ");
             case ConnectionState.active: {
-              Map<dynamic, dynamic> wines = event.data.snapshot.value;
+              Map<dynamic, dynamic> wines = snap.data.snapshot.value;
               _wines = [];
               wines.forEach((key,value) {
                 _wines.add(new Wine.fromJSON(value));

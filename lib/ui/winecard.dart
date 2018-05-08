@@ -28,57 +28,63 @@ class WineCard extends StatelessWidget {
           ),
         ],
       ),
-      child: new Column(
+      child: new Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Container(
-            height: 80.0,
-            padding: new EdgeInsets.symmetric(horizontal: 15.0),
-            child: _getWineCardTop()
+          new Expanded(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Container(
+                  height: 80.0,
+                  padding: new EdgeInsets.symmetric(horizontal: 15.0),
+                  child: _getWineName()
+                ),
+                new Container(
+                  height: 40.0,
+                  padding: new EdgeInsets.symmetric(horizontal: 15.0),
+                  child: _getWineDetails()
+                )
+              ]
+            ),
           ),
           new Container(
-            height: 40.0,
+            height: 100.0,
             padding: new EdgeInsets.symmetric(horizontal: 15.0),
-            child: _getWineCardBottom()
-          )
-        ]
-      )
+            child: _getWineRating(),
+          ),
+        ],
+      ) 
     );
   }
 
-  Widget _getWineCardTop() {
-    return new Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
+  Widget _getWineName() {
+    return new Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new Expanded(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Text('${wine.name}', style: headerText, overflow: TextOverflow.ellipsis,),
-              new Text('${wine.type}', style: footerText, overflow: TextOverflow.ellipsis,),
-            ],
-          ),
-        ),
-        new Icon(Icons.star, color: Colors.amberAccent,),
-        new Text('${wine.rating}', style: headerText,)
-      ]
+        new Text('${wine.name}', style: headerText, overflow: TextOverflow.ellipsis,),
+        new Text('${wine.type}', style: footerText, overflow: TextOverflow.ellipsis,),
+      ],
     );
   }
 
-  Widget _getWineCardBottom() {
+  Widget _getWineDetails() {
     return new Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-       new Expanded(
-          child: new Row(
-            children: <Widget>[
-              new Icon(Icons.pin_drop, color: Colors.purple[50]),
-              new Text ('${wine.region}', style: footerText)
-            ],
-          ),
-        )
+        new Icon(Icons.pin_drop, color: Colors.purple[50]),
+        new Text ('${wine.region}', style: footerText)
+      ],
+    );
+  }
+
+  Widget _getWineRating() {
+    return new Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        new Icon(Icons.star, color: Colors.amberAccent,size: 45.0,),
+        new Text('${wine.rating}', style: headerText),
       ],
     );
   }
